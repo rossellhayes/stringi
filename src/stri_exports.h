@@ -163,7 +163,8 @@ SEXP stri_wrap(SEXP str, SEXP width, SEXP cost_exponent=Rf_ScalarInteger(2),
     SEXP indent=Rf_ScalarInteger(0), SEXP exdent=Rf_ScalarInteger(0),
     SEXP prefix=Rf_mkString(""), SEXP initial=Rf_mkString(""),
     SEXP whitespace_only=Rf_ScalarLogical(FALSE),
-    SEXP use_length=Rf_ScalarLogical(FALSE), SEXP locale=R_NilValue);
+    SEXP use_length=Rf_ScalarLogical(FALSE), SEXP locale=R_NilValue,
+    SEXP penalize_last_line=Rf_ScalarLogical(FALSE));
 
 // trans_other.cpp:
 SEXP stri_trans_char(SEXP str, SEXP pattern, SEXP replacement);

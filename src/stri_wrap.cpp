@@ -103,7 +103,7 @@ void stri__wrap_dynamic(std::deque<R_len_t>& wrap_after,
                         R_len_t nwords, int width_val, double exponent_val,
                         const std::vector<R_len_t>& widths_orig,
                         const std::vector<R_len_t>& widths_trim,
-                        int add_para_1, int add_para_n)
+                        int add_para_1, int add_para_n, bool penalize_last_line)
 {
 #define IDX(i,j) (i)*nwords+(j)
     vector<double> cost(nwords*nwords);
@@ -130,11 +130,13 @@ void stri__wrap_dynamic(std::deque<R_len_t>& wrap_after,
             if (i == 0) ct -= add_para_1;
             else        ct -= add_para_n;
 
-            if (j == nwords-1) { // last line == cost 0
-                if (j == i || ct >= 0)
-                    cost[IDX(i,j)] = 0.0;
-                else
-                    cost[IDX(i,j)] = -1.0/*Inf*/;
+            if (!penalize_last_line) {
+                if (j == nwords-1) { // last line == cost 0
+                    if (j == i || ct >= 0)
+                        cost[IDX(i,j)] = 0.0;
+                    else
+                        cost[IDX(i,j)] = -1.0/*Inf*/;
+                }
             }
             else if (j == i)
                 // some words don't fit in a line at all -> cost 0.0
@@ -244,7 +246,7 @@ struct StriWrapLineStart {
  */
 SEXP stri_wrap(SEXP str, SEXP width, SEXP cost_exponent,
                SEXP indent, SEXP exdent, SEXP prefix, SEXP initial, SEXP whitespace_only,
-               SEXP use_length, SEXP locale)
+               SEXP use_length, SEXP locale, SEXP penalize_last_line)
 {
     bool use_length_val      = stri__prepare_arg_logical_1_notNA(use_length, "use_length");
     double exponent_val      = stri__prepare_arg_double_1_notNA(cost_exponent, "cost_exponent");
@@ -455,7 +457,8 @@ SEXP stri_wrap(SEXP str, SEXP width, SEXP cost_exponent,
             stri__wrap_dynamic(wrap_after, nwords, width_val, exponent_val,
                 widths_orig, widths_trim,
                 (use_length_val)?((i==0)?ii.count:pi.count):((i==0)?ii.width:pi.width),
-                (use_length_val)?pe.count:pe.width);
+                (use_length_val)?pe.count:pe.width,
+                penalize_last_line);
         }
 
         // wrap_after.size() line breaks => wrap_after.size()+1 lines

@@ -235,7 +235,7 @@ const R_CallMethodDef cCallMethods[] = {
     STRI__MK_CALL("C_stri_unescape_unicode",             stri_unescape_unicode,           1),
     STRI__MK_CALL("C_stri_unique",                       stri_unique,                     2),
     STRI__MK_CALL("C_stri_width",                        stri_width,                      1),
-    STRI__MK_CALL("C_stri_wrap",                         stri_wrap,                      10),
+    STRI__MK_CALL("C_stri_wrap",                         stri_wrap,                      11),
     // the list must be NULL-terminated:
     {NULL,                           NULL,                  0}
 

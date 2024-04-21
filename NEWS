@@ -1,6 +1,13 @@
 # Changelog
 
 
+## 1.9.1 (under development)
+
+* [NEW FEATURE] #507: `stri_wrap` now has a new argument, `penalize_last_line`,
+  which allows blank space at the end of the last line to be counted in the 
+  dynamic algorithm.
+
+
 ## 1.8.3 (2023-12-10)
 
 ## [BUILD TIME] [BUGFIX] Fixed the *format string is not a string literal

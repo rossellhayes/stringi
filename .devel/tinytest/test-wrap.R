@@ -101,23 +101,23 @@ strings <- list(stri_paste("ala ma \u0105 \u00F1 kota i kotek ma alicje oraz dwi
     "ornare quis eleifend ac, vehicula eu tortor. Aenean sapien orci, ", "pellentesque quis enim sed, adipiscing posuere massa. Praesent ",
     "quis augue ut massa pellentesque tincidunt. In sed pretium eros."))
 
-#    for (s in strings) { # to do: cost of the last line is zero since stringi_0.4-1
-#       for (i in c(12,20,30,40)) {
-#          exponents <- c(0, 1, 2, 3)
-#          res <- vector('list', length(exponents))
-#          for (j in seq_along(exponents))
-#             res[[j]] <- stri_wrap(s, i, cost_exponent=exponents[j])
-#
-#          for (j in seq_along(exponents))
-#             expect_true(all(stri_length(res[[j]]) <= i))
-#
-#          for (j in seq_along(exponents)[-1]) {
-#             cost_greedy <- sum((i-stri_length(res[[1]]))^exponents[j])
-#             cost_dynamic <- sum((i-stri_length(res[[j]]))^exponents[j])
-#             expect_true(cost_greedy >= cost_dynamic)
-#          }
-#       }
-#    }
+for (s in strings) {
+   for (i in c(12,20,30,40)) {
+      exponents <- c(0, 1, 2, 3)
+      res <- vector('list', length(exponents))
+      for (j in seq_along(exponents))
+         res[[j]] <- stri_wrap(s, i, cost_exponent=exponents[j], penalize_last_line=TRUE)
+      
+      for (j in seq_along(exponents))
+         expect_true(all(stri_length(res[[j]]) <= i))
+      
+      for (j in seq_along(exponents)[-1]) {
+         cost_greedy <- sum((i-stri_length(res[[1]]))^exponents[j])
+         cost_dynamic <- sum((i-stri_length(res[[j]]))^exponents[j])
+         expect_true(cost_greedy >= cost_dynamic)
+      }
+   }
+}
 
 expect_equivalent(stri_width(stri_wrap(stri_dup("a ", 30), 60)), 59)
 expect_equivalent(stri_width(stri_wrap(stri_dup("\u0105 ", 30), 60)), 59)

@@ -17,7 +17,8 @@ stri_wrap(
   initial = prefix,
   whitespace_only = FALSE,
   use_length = FALSE,
-  locale = NULL
+  locale = NULL,
+  penalize_last_line = TRUE
 )
 }
 \arguments{
@@ -57,6 +58,10 @@ points be used instead of the total code point width (see \code{\link{stri_width
 \item{locale}{\code{NULL} or \code{''} for text boundary analysis following
 the conventions of the default locale, or a single string with
 locale identifier, see \link{stringi-locale}}
+
+\item{locale}{single logical value; should blank space in the last line of text 
+be counted in the calculation used by the dynamic algorithm when
+\code{cost_exponent} is positive?}
 }
 \value{
 If \code{simplify} is \code{TRUE}, then a character vector is returned.

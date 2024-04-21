@@ -107,6 +107,9 @@
 #' locale identifier, see \link{stringi-locale}
 #' @param use_length single logical value; should the number of code
 #' points be used instead of the total code point width (see \code{\link{stri_width}})?
+#' @param penalize_last_line single logical value; should blank space in the last
+#'        line of text be counted in the calculation used by the dynamic algorithm
+#'        when \code{cost_exponent} is positive?
 #'
 #' @return
 #' If \code{simplify} is \code{TRUE}, then a character vector is returned.
@@ -134,7 +137,7 @@ stri_wrap <- function(str, width = floor(0.9 * getOption("width")),
     cost_exponent = 2,
     simplify = TRUE, normalize = TRUE, normalise = normalize,
     indent = 0, exdent = 0, prefix = "", initial = prefix,
-    whitespace_only = FALSE, use_length = FALSE, locale = NULL)
+    whitespace_only = FALSE, use_length = FALSE, locale = NULL, penalize_last_line = FALSE)
 {
     simplify <- as.logical(simplify)
 
@@ -150,7 +153,7 @@ stri_wrap <- function(str, width = floor(0.9 * getOption("width")),
     }
 
     ret <- .Call(C_stri_wrap, str, width, cost_exponent, indent, exdent, prefix,
-        initial, whitespace_only, use_length, locale)
+        initial, whitespace_only, use_length, locale, penalize_last_line)
 
     if (simplify) {
         # this will give an informative warning or error if sth is wrong
